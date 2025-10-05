@@ -445,7 +445,9 @@ Try to use same name again, it fails.<br>
 We cannot reuse names, we need to clean up.
 Port re-using can also cause issues.</p>
 <h2 id="cleaning-up">Cleaning up</h2>
-<p>From container list, delete container called <strong>SPUC</strong>.</p>
+<p>From container list, delete container called <strong>SPUC</strong>.
+Try now to create a container with name <strong>SPUC</strong> and port <code>8321</code>.
+It fails, port already in use.</p>
 <p>From image list, try to delete <code>hello-world</code>.<br>
 It says it is <strong>in use</strong>.</p>
 <p>Delete all the containers.<br>
@@ -453,7 +455,8 @@ Make sure it says <strong>unused</strong> now. Try again.</p>
 <h2 id="limitations---why-not-docker-desktop">Limitations - Why not Docker Desktop?</h2>
 <p>Limited in how you can run the containers.</p>
 <p>Run <strong>alpine</strong>. Nothing happens.</p>
-<h2 id="show-keypoints-slide">Show keypoints slide</h2>
+<p>Delete all containers and images.</p>
+<h2 id="show-keypoints-slide-image">Show keypoints slide <strong>Image</strong></h2>
 <hr>
 <hr>
 <h1 id="building-our-docker-cli-toolkit">Building our Docker CLI toolkit</h1>
@@ -477,7 +480,8 @@ Make sure it says <strong>unused</strong> now. Try again.</p>
 <h2 id="default-command">Default Command</h2>
 <p><strong>Image:</strong> A diagram representing the lifecycle of a container</p>
 <h3 id="further-examples-of-container-lifecycle">Further examples of container lifecycle</h3>
-<p><strong>Image:</strong> Further details and examples of the lifecycle of a container</p>
+<p><strong>Image:</strong> Example 1 - hello-world
+<strong>Image:</strong> Example 2 - sleep forever</p>
 <h2 id="running">Running</h2>
 <pre class="hljs"><code><div>docker run spuacv/spuc:latest
 </div></code></pre>
@@ -536,6 +540,7 @@ tree
 <h2 id="interactive-sessions">Interactive sessions</h2>
 <pre class="hljs"><code><div>docker run -it alpine:latest
 </div></code></pre>
+<p>Exit, then do <code>docker ps -a</code> to see it is exited.</p>
 <h2 id="reviving-containers">Reviving Containers</h2>
 <pre class="hljs"><code><div>docker <span class="hljs-built_in">kill</span> spuc_container
 docker ps
@@ -561,7 +566,7 @@ docker stats
 <p>This is a relatively standard command.<br>
 It will get worse.</p>
 <p>Already ahead of Docker Desktop, but lets do more, like persist data.</p>
-<h2 id="show-keypoints-slide">Show keypoints slide</h2>
+<h2 id="show-keypoints-slide-image">Show keypoints slide <strong>Image</strong></h2>
 <hr>
 <hr>
 <h1 id="sharing-information-with-containers">Sharing information with containers</h1>
@@ -616,10 +621,16 @@ cat spuc/output/unicorn_sightings.txt
 <pre class="hljs"><code><div>ls -l spuc/unicorn_sightings.txt
 </div></code></pre>
 <p>In some versions of docker, this might be owned by root!</p>
+<h3 id="docker-cp">Docker cp</h3>
+<p>We can copy files from and to containers with <strong><code>docker cp &lt;source&gt; &lt;destination&gt;</code></strong>.</p>
+<pre class="hljs"><code><div>docker cp spuc_container:/spuc/config/print.config .
+cat print.config
+</div></code></pre>
+<p>Note that this <strong>will not keep changes in sync</strong> like a bind mount</p>
 <h3 id="bind-mount-files">Bind mount files</h3>
 <p>We can bind mount individual files, like the print config.
-First we create the file:</p>
-<pre class="hljs"><code><div><span class="hljs-built_in">echo</span> <span class="hljs-string">"::::: {time} Unicorn number {count} spotted at {location}! Brightness: {brightness} {units}"</span> &gt; print.config
+First we modify the file to our liking:</p>
+<pre class="hljs"><code><div>::::: {time} Unicorn number {count} spotted at {location}! Brightness: {brightness} {units}
 </div></code></pre>
 <p>Then we kill the running container and mount it in:</p>
 <pre class="hljs"><code><div>docker <span class="hljs-built_in">kill</span> spuc_container
@@ -629,7 +640,7 @@ docker run -d --rm --name spuc_container -p 8321:8321 -v ./print.config:/spuc/co
 <pre class="hljs"><code><div>curl -X PUT localhost:8321/unicorn_spotted?location=jupyter\&amp;brightness=210
 docker logs spuc_container
 </div></code></pre>
-<p>This file can be edited while the container runs. For example:</p>
+<p>This file can be edited while the container runs. For example, lets get rid of the date:</p>
 <pre class="hljs"><code><div><span class="hljs-built_in">echo</span> <span class="hljs-string">"::::: Unicorn number {count} spotted at {location}! Brightness: {brightness} {units}"</span> &gt; print.config
 </div></code></pre>
 <pre class="hljs"><code><div>curl -X PUT localhost:8321/unicorn_spotted?location=venus\&amp;brightness=148
@@ -638,6 +649,7 @@ docker logs spuc_container
 <p><strong>Warning:</strong> We replaced the file in the container with the file from the host filesystem.<br>
 We could do the same with a whole directory, but be careful not to overwrite important files in the container!</p>
 <h2 id="challenge-common-mistakes-with-volumes">! Challenge: Common mistakes with volumes</h2>
+<p><strong>Image:</strong> Common mistakes with volumes</p>
 <pre class="hljs"><code><div>docker run -v spuc-vol spuacv/spuc:latest
 </div></code></pre>
 <p><strong>Problem:</strong> Missing path to mount volume. It uses /spuc-vol in the container, but it wont persist!<br>
@@ -658,7 +670,7 @@ We could do the same with a whole directory, but be careful not to overwrite imp
 </div></code></pre>
 <p><strong>Problem:</strong> <code>name:path</code>, so volume... However, print.config is not a directory.<br>
 <strong>Fix:</strong> Use docker volume rm print.config to remove the volume and try again.</p>
-<h2 id="show-keypoints-slide">Show keypoints slide</h2>
+<h2 id="show-keypoints-slide-image">Show keypoints slide <strong>Image</strong></h2>
 <hr>
 <hr>
 <h1 id="docker-hub">Docker Hub</h1>
@@ -702,7 +714,7 @@ The “official” badge is shown on the top of the repository.</p>
 <li>ECR from Amazon.</li>
 <li>ACR from Azure, Microsoft.</li>
 </ul>
-<h2 id="show-keypoints-slide">Show keypoints slide</h2>
+<h2 id="show-keypoints-slide-image">Show keypoints slide <strong>Image</strong></h2>
 <hr>
 <hr>
 <h1 id="configuring-containers">Configuring containers</h1>
@@ -714,7 +726,7 @@ We can:</p>
 </ul>
 <h2 id="setting-the-environment">Setting the environment</h2>
 <p>We set environment variables with <code>-e name=value</code>:</p>
-<pre class="hljs"><code><div>docker stop spuc_container
+<pre class="hljs"><code><div>docker <span class="hljs-built_in">kill</span> spuc_container
 docker run -d --rm --name spuc_container -p 8321:8321 -v ./print.config:/spuc/config/print.config -v spuc-volume:/spuc/output -e EXPORT=<span class="hljs-literal">true</span> spuacv/spuc:latest
 docker logs spuc_container
 </div></code></pre>
@@ -731,7 +743,7 @@ We must change it to the much more standard <strong>Intergalactic Unicorn Lumino
 <pre class="hljs"><code><div>docker inspect spuacv/spuc:latest -f <span class="hljs-string">"Entrypoint: {{.Config.Entrypoint}}\nCommand: {{.Config.Cmd}}"</span>
 </div></code></pre>
 <p>To override it, we write the command we want at the end:</p>
-<pre class="hljs"><code><div>docker stop spuc_container
+<pre class="hljs"><code><div>docker <span class="hljs-built_in">kill</span> spuc_container
 docker run -d --rm --name spuc_container -p 8321:8321 -v ./print.config:/spuc/config/print.config -v spuc-volume:/spuc/output -e EXPORT=<span class="hljs-literal">true</span> spuacv/spuc:latest --units iulu
 </div></code></pre>
 <pre class="hljs"><code><div>curl -X PUT localhost:8321/unicorn_spotted?location=pluto\&amp;brightness=66
@@ -739,7 +751,7 @@ curl localhost:8321/<span class="hljs-built_in">export</span>
 </div></code></pre>
 <p>This worked, but now we have a mix of units!
 We have to remove the volume to fix this:</p>
-<pre class="hljs"><code><div>docker stop spuc_container
+<pre class="hljs"><code><div>docker <span class="hljs-built_in">kill</span> spuc_container
 docker volume rm spuc-volume
 docker run -d --rm --name spuc_container -p 8321:8321 -v ./print.config:/spuc/config/print.config -v spuc-volume:/spuc/output -e EXPORT=<span class="hljs-literal">true</span> spuacv/spuc:latest --units iulu
 curl -X PUT localhost:8321/unicorn_spotted?location=moon\&amp;brightness=177
@@ -751,6 +763,7 @@ curl -X PUT localhost:8321/unicorn_spotted?location=pluto\&amp;brightness=66
 curl localhost:8321/<span class="hljs-built_in">export</span>
 </div></code></pre>
 <p>Overriding the command is a very common way to configure containers.</p>
+<!-- I am here!! -->
 <h2 id="overriding-the-entrypoint">Overriding the entrypoint</h2>
 <p>This is less common, but it can also be done:</p>
 <pre class="hljs"><code><div>docker run -it --rm --entrypoint /bin/sh spuacv/spuc:latest
@@ -794,7 +807,7 @@ curl localhost:8321/<span class="hljs-built_in">export</span>
 <li><strong>C:</strong> Python script can be changed easily, which is more likely to be bad than good!</li>
 <li><strong>D:</strong> Maximum flexibility, but re-write the whole command to modify even the parameters.</li>
 </ul>
-<h2 id="show-keypoints-slide">Show keypoints slide</h2>
+<h2 id="show-keypoints-slide-image">Show keypoints slide <strong>Image</strong></h2>
 
 </body>
 </html>
