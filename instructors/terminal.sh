@@ -18,6 +18,11 @@ LOG_FILE="${LOG_FILE:-/tmp/$SESSION-split-log-file}"
 
 #erase existing history if passed --clean_history
 for arg in "$@"; do
+  if [ "$arg" == "--reset" ] || [ "$arg" == "-r" ]; then
+    killall tmux 2>/dev/null || true
+    tmux kill-server 2>/dev/null || true
+    break
+  fi
   if [ "$arg" == "--clean_history" ] || [ "$arg" == "-c" ]; then
     echo "" > "${LOG_FILE}"
     break
