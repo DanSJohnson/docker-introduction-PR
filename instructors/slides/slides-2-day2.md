@@ -5,11 +5,11 @@ class:
     - lead
     - invert
 paginate: false
-backgroundImage: url('./fig/purple-space-background-dark.jpg')
+backgroundImage: url('../fig/purple-space-background-dark.jpg')
 backgroundColor: rgba(0,0,0,0.5)
 ---
 
-![bg left:35% w:120%](./fig/docker-SPU.png)
+![bg left:35% w:120%](../fig/docker-SPU.png)
 
 # **Introduction to Docker**
 
@@ -78,7 +78,7 @@ table {
 
  
 | Flag                                          | Description                                             |
-|-----------------------------------------------|---------------------------------------------------------|
+| --------------------------------------------- | ------------------------------------------------------- |
 | `-d`                                          | Run the container in the background                     |
 | `--rm`                                        | Remove the container when it stops                      |
 | `--name spuc_container`                       | Name the container `spuc_container`                     |
@@ -268,7 +268,7 @@ table {
 
  
 | Flag                                          | Description                                             |
-|-----------------------------------------------|---------------------------------------------------------|
+| --------------------------------------------- | ------------------------------------------------------- |
 | `-d`                                          | Run the container in the background                     |
 | `--rm`                                        | Remove the container when it stops                      |
 | `--name spuc_container`                       | Name the container `spuc_container`                     |
@@ -484,7 +484,7 @@ But what happens when they are put together?
 
 ---
 
-![](../code/episodes/docker_compose_apperture.png)
+![](../../code/episodes/docker_compose_apperture.png)
 
 ---
 
@@ -508,7 +508,7 @@ networks:
 
 ---
 
-![height:600](../code/episodes/docker_compose_spuc.png)
+![height:600](../../code/episodes/docker_compose_spuc.png)
 
 --- 
 ## Rapid extension
@@ -522,7 +522,7 @@ For example maybe SPUC would benefit from :
 - Allowing users to upload images of their sightings
 
 ---
-![height:600](../code/episodes/docker_compose_full.png)
+![height:600](../../code/episodes/docker_compose_full.png)
 
 ## Keypoints
 
@@ -532,4 +532,4 @@ For example maybe SPUC would benefit from :
 This is *fun*! You get to spend more time in the interesting parts of your project!
 
 ---
-![height:600](../episodes/fig/SPUA/spua_thanks_you.png)
+![height:600](../../episodes/fig/SPUA/spua_thanks_you.png)
