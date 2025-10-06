@@ -588,8 +588,8 @@ curl localhost:8321/export
 
 Overriding the command is a very common way to configure containers.
 
-<!-- I am here!! -->
 ## Overriding the entrypoint
+
 This is less common, but it can also be done:
 ```bash
 docker run -it --rm --entrypoint /bin/sh spuacv/spuc:latest
