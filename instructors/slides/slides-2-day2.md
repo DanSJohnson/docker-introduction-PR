@@ -484,7 +484,7 @@ But what happens when they are put together?
 
 ---
 
-![](../../code/episodes/docker_compose_apperture.png)
+![](../../episodes/fig/docker_compose_apperture.png)
 
 ---
 
@@ -507,8 +507,7 @@ networks:
 ```
 
 ---
-
-![height:600](../../code/episodes/docker_compose_spuc.png)
+![height:600](../../episodes/fig/docker_compose_spuc.png)
 
 --- 
 ## Rapid extension
@@ -522,7 +521,7 @@ For example maybe SPUC would benefit from :
 - Allowing users to upload images of their sightings
 
 ---
-![height:600](../../code/episodes/docker_compose_full.png)
+![height:600](../../episodes/fig/docker_compose_full.png)
 
 ## Keypoints
 
