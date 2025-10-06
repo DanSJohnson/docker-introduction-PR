@@ -5,11 +5,11 @@ class:
     - lead
     - invert
 paginate: false
-backgroundImage: url('./fig/purple-space-background-dark.jpg')
+backgroundImage: url('../fig/purple-space-background-dark.jpg')
 backgroundColor: rgba(0,0,0,0.5)
 ---
 
-![bg left:35% w:120%](./fig/docker-SPU.png)
+![bg left:35% w:120%](../fig/docker-SPU.png)
 
 # **Introduction to Docker**
 
@@ -54,7 +54,7 @@ Space Purple Unicorn Association
 
 ---
 
-![bg right:50% w:90%](./fig/ship.png)
+![bg right:50% w:90%](../fig/ship.png)
 
 * ## Why containers?
   * Reliable Software
@@ -73,7 +73,7 @@ Space Purple Unicorn Association
 
 <div style="flex: 2; margin-top:40px">
 
-![w:400](../episodes/fig/SPUA/SPUA_logo_transparent.png)
+![w:400](../../episodes/fig/SPUA/SPUA_logo_transparent.png)
 
 </div>
 
@@ -100,7 +100,7 @@ If you’d like to join the effort to preserve this keystone species, please hel
 
 <div style="flex: 2; margin-top:40px">
 
-![w:400](../episodes/fig/SPUA/SPUA_logo_transparent.png)
+![w:400](../../episodes/fig/SPUA/SPUA_logo_transparent.png)
 
 </div>
 

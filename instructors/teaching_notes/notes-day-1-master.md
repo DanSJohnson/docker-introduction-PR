@@ -118,6 +118,8 @@ Port re-using can also cause issues.
 ## Cleaning up
 
 From container list, delete container called **SPUC**.
+Try now to create a container with name **SPUC** and port `8321`.
+It fails, port already in use.
 
 From image list, try to delete `hello-world`.  
 It says it is **in use**.
@@ -132,8 +134,10 @@ Limited in how you can run the containers.
 
 Run **alpine**. Nothing happens.
 
+Delete all containers and images.
 
-## Show keypoints slide
+
+## Show keypoints slide **Image**
 
 
 --------------------------------------------------
@@ -173,7 +177,8 @@ docker inspect spuacv/spuc:latest -f $'Command: {{.Config.Cmd}}\nEntrypoint: {{.
 **Image:** A diagram representing the lifecycle of a container
 
 ### Further examples of container lifecycle
-**Image:** Further details and examples of the lifecycle of a container
+**Image:** Example 1 - hello-world
+**Image:** Example 2 - sleep forever
 
 
 ## Running
@@ -262,6 +267,7 @@ We can get out with `Ctrl+D` or `exit`.
 ```bash
 docker run -it alpine:latest
 ```
+Exit, then do `docker ps -a` to see it is exited.
 
 ## Reviving Containers
 ```bash
@@ -301,7 +307,7 @@ It will get worse.
 Already ahead of Docker Desktop, but lets do more, like persist data.
 
 
-## Show keypoints slide
+## Show keypoints slide **Image**
 
 
 --------------------------------------------------
@@ -382,12 +388,19 @@ ls -l spuc/unicorn_sightings.txt
 ```
 In some versions of docker, this might be owned by root!
 
+### Docker cp
+We can copy files from and to containers with **`docker cp <source> <destination>`**.
+```bash
+docker cp spuc_container:/spuc/config/print.config .
+cat print.config
+```
+Note that this **will not keep changes in sync** like a bind mount
 
 ### Bind mount files
 We can bind mount individual files, like the print config.
-First we create the file:
-```bash
-echo "::::: {time} Unicorn number {count} spotted at {location}! Brightness: {brightness} {units}" > print.config
+First we modify the file to our liking:
+```
+::::: {time} Unicorn number {count} spotted at {location}! Brightness: {brightness} {units}
 ```
 Then we kill the running container and mount it in:
 ```bash
@@ -400,7 +413,7 @@ curl -X PUT localhost:8321/unicorn_spotted?location=jupyter\&brightness=210
 docker logs spuc_container
 ```
 
-This file can be edited while the container runs. For example:
+This file can be edited while the container runs. For example, lets get rid of the date:
 ```bash
 echo "::::: Unicorn number {count} spotted at {location}! Brightness: {brightness} {units}" > print.config
 ```
@@ -413,6 +426,7 @@ docker logs spuc_container
 We could do the same with a whole directory, but be careful not to overwrite important files in the container!
 
 ## ! Challenge: Common mistakes with volumes
+**Image:** Common mistakes with volumes
 ```bash
 docker run -v spuc-vol spuacv/spuc:latest
 ```
@@ -444,7 +458,7 @@ docker run -v print.config:/spuc/config/print.config spuacv/spuc:latest
 **Fix:** Use docker volume rm print.config to remove the volume and try again.
 
 
-## Show keypoints slide
+## Show keypoints slide **Image**
 
 
 --------------------------------------------------
@@ -505,7 +519,7 @@ The “official” badge is shown on the top of the repository.
 - ACR from Azure, Microsoft.
 
 
-## Show keypoints slide
+## Show keypoints slide **Image**
 
 
 --------------------------------------------------
@@ -524,7 +538,7 @@ We can:
 ## Setting the environment
 We set environment variables with `-e name=value`:
 ```bash
-docker stop spuc_container
+docker kill spuc_container
 docker run -d --rm --name spuc_container -p 8321:8321 -v ./print.config:/spuc/config/print.config -v spuc-volume:/spuc/output -e EXPORT=true spuacv/spuc:latest
 docker logs spuc_container
 ```
@@ -550,7 +564,7 @@ docker inspect spuacv/spuc:latest -f "Entrypoint: {{.Config.Entrypoint}}\nComman
 ```
 To override it, we write the command we want at the end:
 ```bash
-docker stop spuc_container
+docker kill spuc_container
 docker run -d --rm --name spuc_container -p 8321:8321 -v ./print.config:/spuc/config/print.config -v spuc-volume:/spuc/output -e EXPORT=true spuacv/spuc:latest --units iulu
 ```
 ```bash
@@ -560,7 +574,7 @@ curl localhost:8321/export
 This worked, but now we have a mix of units!
 We have to remove the volume to fix this:
 ```bash
-docker stop spuc_container
+docker kill spuc_container
 docker volume rm spuc-volume
 docker run -d --rm --name spuc_container -p 8321:8321 -v ./print.config:/spuc/config/print.config -v spuc-volume:/spuc/output -e EXPORT=true spuacv/spuc:latest --units iulu
 curl -X PUT localhost:8321/unicorn_spotted?location=moon\&brightness=177
@@ -574,7 +588,7 @@ curl localhost:8321/export
 
 Overriding the command is a very common way to configure containers.
 
-
+<!-- I am here!! -->
 ## Overriding the entrypoint
 This is less common, but it can also be done:
 ```bash
@@ -597,5 +611,5 @@ All valid combinations, but with different implications:
 - **D:** Maximum flexibility, but re-write the whole command to modify even the parameters.
 
 
-## Show keypoints slide
+## Show keypoints slide **Image**
 
